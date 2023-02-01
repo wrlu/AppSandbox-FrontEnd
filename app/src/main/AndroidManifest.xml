@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:sharedUserId="android.uid.system">
+
+    <permission
+        android:name="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE" />
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
+    <application
+        android:name=".MainApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppSandbox"
+        tools:targetApi="31">
+
+        <service
+            android:name=".service.BinderHookService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE"
+            android:process=":binder_hook" />
+        <service
+            android:name=".service.DexHookService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE"
+            android:process=":dex_hook" />
+        <service
+            android:name=".service.HttpHookService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE"
+            android:process=":http_hook" />
+        <service
+            android:name=".service.IntentHookService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE"
+            android:process=":intent_hook" />
+
+        <receiver
+            android:name=".receiver.SystemReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
