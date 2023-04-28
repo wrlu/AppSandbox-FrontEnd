@@ -1,0 +1,3 @@
+C:/Users/ysmilec/AndroidStudioProjects/AppSandbox-FrontEnd/app/.cxx/Debug/2r31632n/x86_64/CMakeFiles/sandbox.dir
+C:/Users/ysmilec/AndroidStudioProjects/AppSandbox-FrontEnd/app/.cxx/Debug/2r31632n/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/ysmilec/AndroidStudioProjects/AppSandbox-FrontEnd/app/.cxx/Debug/2r31632n/x86_64/CMakeFiles/rebuild_cache.dir

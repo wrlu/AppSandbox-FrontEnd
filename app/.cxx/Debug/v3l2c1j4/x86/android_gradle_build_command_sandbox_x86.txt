@@ -1,0 +1,7 @@
+Executable : C:\Users\ychen\AppData\Local\Android\Sdk\cmake\3.18.1\bin\ninja.exe
+arguments : 
+-C
+C:\Users\ychen\Android\tools\appSandbox\AppSandbox-FrontEnd\app\.cxx\Debug\v3l2c1j4\x86
+sandbox
+jvmArgs : 
+

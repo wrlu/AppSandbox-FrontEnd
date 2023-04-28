@@ -1,12 +1,14 @@
 package com.hssl.app.sandbox.preference;
 
+import android.os.Bundle;
 import android.util.Log;
 
 public class Debug {
-    public static final boolean IS_DEBUG = false;
-    public static void d(String TAG, String msg) {
+    public static final boolean IS_DEBUG = true;
+    public static Bundle d(String TAG, String msg) {
         if (IS_DEBUG)
             Log.d(TAG, msg);
+        return null;
     }
 
     public static void w(String TAG, String msg) {

@@ -1,0 +1,38 @@
+{
+  "buildFiles": [
+    "C:\\Users\\ychen\\Android\\tools\\appSandbox\\AppSandbox-FrontEnd\\app\\src\\main\\cpp\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\ychen\\AppData\\Local\\Android\\Sdk\\cmake\\3.18.1\\bin\\ninja.exe",
+      "-C",
+      "C:\\Users\\ychen\\Android\\tools\\appSandbox\\AppSandbox-FrontEnd\\app\\.cxx\\Debug\\v3l2c1j4\\x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\ychen\\AppData\\Local\\Android\\Sdk\\cmake\\3.18.1\\bin\\ninja.exe",
+    "-C",
+    "C:\\Users\\ychen\\Android\\tools\\appSandbox\\AppSandbox-FrontEnd\\app\\.cxx\\Debug\\v3l2c1j4\\x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "sandbox::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "x86_64",
+      "artifactName": "sandbox",
+      "output": "C:\\Users\\ychen\\Android\\tools\\appSandbox\\AppSandbox-FrontEnd\\app\\build\\intermediates\\cxx\\Debug\\v3l2c1j4\\obj\\x86_64\\libsandbox.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "C:\\Users\\ychen\\AppData\\Local\\Android\\Sdk\\ndk\\21.4.7075529\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe",
+      "cppCompilerExecutable": "C:\\Users\\ychen\\AppData\\Local\\Android\\Sdk\\ndk\\21.4.7075529\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

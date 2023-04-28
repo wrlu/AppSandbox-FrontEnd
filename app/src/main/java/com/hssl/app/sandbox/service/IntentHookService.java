@@ -1,5 +1,7 @@
 package com.hssl.app.sandbox.service;
 
+import android.content.Intent;
+
 import com.hssl.app.sandbox.entity.IntentData;
 import com.hssl.app.sandbox.preference.Debug;
 import com.hssl.app.sandbox.storage.dao.IntentDao;
@@ -35,8 +37,9 @@ public class IntentHookService extends BaseHookService {
             try {
                 IntentData intentData = IntentData.openStream(socket.getInputStream());
                 socket.close();
-                intentDao.insertIntentData(intentData);
-            } catch (IOException e) {
+//                intentDao.insertIntentData(intentData);
+            } catch (IOException | ClassNotFoundException e) {
+
                 Debug.e(TAG, e);
             }
         }

@@ -1,0 +1,7 @@
+Executable : C:\Users\ychen\AppData\Local\Android\Sdk\cmake\3.18.1\bin\ninja.exe
+arguments : 
+-C
+C:\Users\ychen\Android\tools\appSandbox\AppSandbox-FrontEnd\app\.cxx\RelWithDebInfo\2w26651l\x86_64
+sandbox
+jvmArgs : 
+

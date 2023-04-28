@@ -1,0 +1,3 @@
+C:/Users/ychen/Android/tools/appSandbox/AppSandbox-FrontEnd/app/.cxx/Debug/v3l2c1j4/arm64-v8a/CMakeFiles/sandbox.dir
+C:/Users/ychen/Android/tools/appSandbox/AppSandbox-FrontEnd/app/.cxx/Debug/v3l2c1j4/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/ychen/Android/tools/appSandbox/AppSandbox-FrontEnd/app/.cxx/Debug/v3l2c1j4/arm64-v8a/CMakeFiles/rebuild_cache.dir

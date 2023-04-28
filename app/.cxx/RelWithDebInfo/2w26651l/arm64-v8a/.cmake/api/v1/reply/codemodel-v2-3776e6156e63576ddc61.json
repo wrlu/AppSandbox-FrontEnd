@@ -1,0 +1,59 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.6.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "sandbox",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "sandbox::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sandbox-RelWithDebInfo-29aab1efd85531fabf85.json",
+					"name" : "sandbox",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/ychen/Android/tools/appSandbox/AppSandbox-FrontEnd/app/.cxx/RelWithDebInfo/2w26651l/arm64-v8a",
+		"source" : "C:/Users/ychen/Android/tools/appSandbox/AppSandbox-FrontEnd/app/src/main/cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 1
+	}
+}

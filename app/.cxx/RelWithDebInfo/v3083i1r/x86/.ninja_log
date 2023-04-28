@@ -1,0 +1,6 @@
+# ninja log v5
+0	259	703008627	CMakeFiles/sandbox.dir/sandbox.cpp.o	3a650b1812c33d67
+260	313	703008628	C:/Users/ysmilec/AndroidStudioProjects/AppSandbox-FrontEnd/app/build/intermediates/cxx/RelWithDebInfo/v3083i1r/obj/x86/libsandbox.so	d9493f0237132903
+0	8	0	clean	38c52400d5925944
+2	240	703012095	CMakeFiles/sandbox.dir/sandbox.cpp.o	3a650b1812c33d67
+240	288	703012095	C:/Users/ysmilec/AndroidStudioProjects/AppSandbox-FrontEnd/app/build/intermediates/cxx/RelWithDebInfo/v3083i1r/obj/x86/libsandbox.so	d9493f0237132903

@@ -1,0 +1,7 @@
+[
+{
+  "directory": "C:/Users/ychen/Android/tools/appSandbox/AppSandbox-FrontEnd/app/.cxx/Debug/v3l2c1j4/arm64-v8a",
+  "command": "C:\\Users\\ychen\\AppData\\Local\\Android\\Sdk\\ndk\\21.4.7075529\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=aarch64-none-linux-android29 --gcc-toolchain=C:/Users/ychen/AppData/Local/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Users/ychen/AppData/Local/Android/Sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dsandbox_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC -o CMakeFiles\\sandbox.dir\\sandbox.cpp.o -c C:\\Users\\ychen\\Android\\tools\\appSandbox\\AppSandbox-FrontEnd\\app\\src\\main\\cpp\\sandbox.cpp",
+  "file": "C:\\Users\\ychen\\Android\\tools\\appSandbox\\AppSandbox-FrontEnd\\app\\src\\main\\cpp\\sandbox.cpp"
+}
+]
