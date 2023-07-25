@@ -1,2 +1,0 @@
-ninja: Entering directory `C:\Users\ychen\Android\tools\appSandbox\AppSandbox-FrontEnd\app\.cxx\RelWithDebInfo\2w26651l\x86_64'
-ninja: no work to do.

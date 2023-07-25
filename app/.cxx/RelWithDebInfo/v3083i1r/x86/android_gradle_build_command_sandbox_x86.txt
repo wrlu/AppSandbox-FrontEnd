@@ -1,7 +1,0 @@
-Executable : C:\Users\ysmilec\AppData\Local\Android\Sdk\cmake\3.18.1\bin\ninja.exe
-arguments : 
--C
-C:\Users\ysmilec\AndroidStudioProjects\AppSandbox-FrontEnd\app\.cxx\RelWithDebInfo\v3083i1r\x86
-sandbox
-jvmArgs : 
-

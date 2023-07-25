@@ -1,7 +1,0 @@
-Executable : C:\Users\ysmilec\AppData\Local\Android\Sdk\cmake\3.18.1\bin\ninja.exe
-arguments : 
--C
-C:\Users\ysmilec\AndroidStudioProjects\AppSandbox-FrontEnd\app\.cxx\Debug\2r31632n\arm64-v8a
-sandbox
-jvmArgs : 
-
