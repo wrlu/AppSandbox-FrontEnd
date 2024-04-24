@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.hssl.app.sandbox.ui.HomeFragment"
+        android:name="com.wrlus.app.sandbox.ui.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.hssl.app.sandbox.ui.DashboardFragment"
+        android:name="com.wrlus.app.sandbox.ui.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.hssl.app.sandbox.ui.SettingsFragment"
+        android:name="com.wrlus.app.sandbox.ui.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

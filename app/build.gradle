@@ -6,8 +6,8 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.hssl.app.sandbox"
-        minSdk 29
+        applicationId "com.wrlus.app.sandbox"
+        minSdk 32
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -39,7 +39,7 @@ android {
             version '3.18.1'
         }
     }
-    namespace 'com.hssl.app.sandbox'
+    namespace 'com.wrlus.app.sandbox'
 }
 
 dependencies {
@@ -49,12 +49,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation "androidx.fragment:fragment:1.5.4"
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
     implementation 'org.bouncycastle:bcprov-jdk18on:1.71'
 
