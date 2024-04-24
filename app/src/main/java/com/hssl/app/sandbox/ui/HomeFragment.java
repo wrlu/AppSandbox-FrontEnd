@@ -13,21 +13,17 @@ import com.hssl.app.sandbox.MainApplication;
 import com.hssl.app.sandbox.R;
 import com.hssl.app.sandbox.databinding.FragmentHomeBinding;
 import com.hssl.app.sandbox.preference.Debug;
-import com.hssl.app.sandbox.storage.callback.DataListener;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
     private FragmentHomeBinding binding;
-    private final DataListener dataListener = this::updateDataCount;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        binding.buttonExported.setOnClickListener(v -> onExportedData());
         binding.buttonClear.setOnClickListener(v -> onClearData());
         return root;
     }
@@ -60,11 +56,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void onExportedData() {
-        MainApplication mainApp = (MainApplication) requireActivity().getApplication();
-        mainApp.exportData();
-    }
-
     private void onClearData() {
         MainApplication mainApp = (MainApplication) requireActivity().getApplication();
         mainApp.clearData();
@@ -75,7 +66,6 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         synchronized (FragmentHomeBinding.class) {
-            Debug.d(TAG, "onDestroyView(), set fragment binding null");
             binding = null;
         }
     }
