@@ -4,11 +4,19 @@
     android:sharedUserId="android.uid.system">
 
     <permission
-        android:name="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE"
+        android:name="com.wrlus.app.sandbox.ACCESS_BINDER_HOOK_SERVICE"
         android:protectionLevel="signature" />
+    <permission
+        android:name="com.wrlus.app.sandbox.ACCESS_DEX_HOOK_SERVICE"
+        android:protectionLevel="signature" />
+    <permission
+        android:name="com.wrlus.app.sandbox.ACCESS_INTENT_HOOK_SERVICE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.wrlus.app.sandbox.ACCESS_BINDER_HOOK_SERVICE" />
+    <uses-permission android:name="com.wrlus.app.sandbox.ACCESS_DEX_HOOK_SERVICE" />
+    <uses-permission android:name="com.wrlus.app.sandbox.ACCESS_INTENT_HOOK_SERVICE" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE" />
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
@@ -23,33 +31,20 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppSandbox"
-        tools:targetApi="31">
+        android:theme="@style/Theme.AppSandbox">
 
         <service
             android:name=".service.BinderHookService"
             android:enabled="true"
             android:exported="true"
-            android:permission="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE"
+            android:permission="com.wrlus.app.sandbox.ACCESS_BINDER_HOOK_SERVICE"
             android:process=":binder_hook" />
         <service
             android:name=".service.DexHookService"
             android:enabled="true"
             android:exported="true"
-            android:permission="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE"
+            android:permission="com.wrlus.app.sandbox.ACCESS_DEX_HOOK_SERVICE"
             android:process=":dex_hook" />
-        <service
-            android:name=".service.HttpHookService"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE"
-            android:process=":http_hook" />
-        <service
-            android:name=".service.IntentHookService"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="com.hssl.app.sandbox.ACCESS_HOOK_SERVICE"
-            android:process=":intent_hook" />
 
         <receiver
             android:name=".receiver.SystemReceiver"
@@ -57,7 +52,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
@@ -68,7 +62,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

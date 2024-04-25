@@ -36,23 +36,20 @@ public class HomeFragment extends Fragment {
 
     private void updateDataCount() {
         MainApplication mainApp = (MainApplication) requireActivity().getApplication();
-        long binderDataCount = mainApp.getBinderDataCount();
-        long httpDataCount = mainApp.getHttpDataCount();
         long dexDataCount = mainApp.getDexDataCount();
-        long intentDataCount = mainApp.getIntentDataCount();
+        long artMethodDataCount = mainApp.getArtMethodDataCount();
+        long binderDataCount = mainApp.getBinderDataCount();
         requireActivity().runOnUiThread(()->{
             if (binding == null) {
                 Debug.w(TAG, "Fragment binding is null, ignore");
                 return;
             }
-            binding.textBinder.setText(
-                    String.format(getString(R.string.collected_binder_data), binderDataCount));
-            binding.textHttp.setText(
-                    String.format(getString(R.string.collected_http_data), httpDataCount));
             binding.textDex.setText(
                     String.format(getString(R.string.collected_dex_data), dexDataCount));
-            binding.textIntent.setText(
-                    String.format(getString(R.string.collected_intent_data), intentDataCount));
+            binding.textArtMethod.setText(
+                    String.format(getString(R.string.collected_art_method_data), artMethodDataCount));
+            binding.textBinder.setText(
+                    String.format(getString(R.string.collected_binder_data), binderDataCount));
         });
     }
 

@@ -3,6 +3,7 @@ package com.wrlus.app.sandbox.ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Process;
 import android.view.LayoutInflater;
@@ -14,17 +15,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import com.hssl.app.sandbox.R;
+import com.wrlus.app.sandbox.R;
 import com.wrlus.app.sandbox.config.PropertyManager;
-import com.hssl.app.sandbox.databinding.FragmentSettingsBinding;
+import com.wrlus.app.sandbox.databinding.FragmentSettingsBinding;
+import com.wrlus.app.sandbox.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class SettingsFragment extends Fragment {
-    private static final String SHARED_PREF_MAIN = "main";
-    private static final String SP_KEY_SHOW_SYS_APP = "show_system_app";
     private FragmentSettingsBinding binding;
     private boolean isShowSysApp;
 
@@ -32,51 +32,63 @@ public class SettingsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         SharedPreferences sharedPref = requireActivity().getSharedPreferences(
-                SHARED_PREF_MAIN, Context.MODE_PRIVATE);
-        isShowSysApp = sharedPref.getBoolean(SP_KEY_SHOW_SYS_APP, false);
-        binding.buttonModify.setOnClickListener(v -> showSelectPackageDialog());
+                Constant.SHARED_PREF_MAIN, Context.MODE_PRIVATE);
+        isShowSysApp = sharedPref.getBoolean(Constant.SP_KEY_SHOW_SYS_APP, false);
+
+        binding.buttonModifyDex.setOnClickListener(v ->
+                showSelectPackageDialog(Constant.FEATURE_DEX));
+        binding.buttonModifyArtMethod.setOnClickListener(v ->
+                showSelectPackageDialog(Constant.FEATURE_ART_METHOD));
+        binding.buttonModifyBinder.setOnClickListener(v ->
+                showSelectPackageDialog(Constant.FEATURE_BINDER));
+
         binding.switchShowSysApp.setChecked(isShowSysApp);
         binding.switchShowSysApp.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> setShowSysAppChecked(isChecked));
-        View root = binding.getRoot();
-        return root;
+        return binding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        updateBinderWatchedUid();
+        updateWatchedUid();
     }
 
-    private void updateBinderWatchedUid() {
+    private void updateWatchedUid() {
         if (binding != null) {
-            int watchedUid = PropertyManager.getBinderWatchedUid();
+            int dexWatchedUid = PropertyManager.getWatchedUid(Constant.FEATURE_DEX);
+            int artMethodWatchedUid = PropertyManager.getWatchedUid(Constant.FEATURE_ART_METHOD);
+            int binderWatchedUid = PropertyManager.getWatchedUid(Constant.FEATURE_BINDER);
+
+            binding.textDexWatchedUidValue
+                    .setText(getString(R.string.watched_uid_value,
+                            getNameForUid(dexWatchedUid), dexWatchedUid));
+            binding.textArtMethodWatchedUidValue
+                    .setText(getString(R.string.watched_uid_value,
+                            getNameForUid(artMethodWatchedUid), artMethodWatchedUid));
             binding.textBinderWatchedUidValue
-                    .setText(getString(R.string.binder_watched_uid_value,
-                            getNameForUid(watchedUid), watchedUid));
+                    .setText(getString(R.string.watched_uid_value,
+                            getNameForUid(binderWatchedUid), binderWatchedUid));
         }
     }
 
     public String getNameForUid(int uid) {
-        if (Process.isApplicationUid(uid)) {
-            String[] packages = requireContext().getPackageManager().getPackagesForUid(uid);
-            return packages[0];
-        } else if (uid == Process.INVALID_UID) {
+        if (uid == Process.INVALID_UID) {
             return "not set";
-        } else if (uid == Process.ROOT_UID) {
-            return "root";
         } else {
-            return "system";
+            PackageManager pm = requireContext().getPackageManager();
+            return pm.getNameForUid(uid);
         }
     }
 
-    private void showSelectPackageDialog() {
-        List<ApplicationInfo> allAppInfos = requireContext().getPackageManager()
+    private void showSelectPackageDialog(String forWhat) {
+        List<ApplicationInfo> allAppInfo = requireContext().getPackageManager()
                 .getInstalledApplications(0);
         List<Integer> allAppUidList = new ArrayList<>();
         List<String> allAppInfoStringList = new ArrayList<>();
         String appStringFormat = "%s (%d)";
-        for (ApplicationInfo applicationInfo : allAppInfos) {
+
+        for (ApplicationInfo applicationInfo : allAppInfo) {
             if (applicationInfo.packageName.equals(requireContext().getPackageName())) {
                 continue;
             }
@@ -87,7 +99,7 @@ public class SettingsFragment extends Fragment {
             allAppInfoStringList.add(String.format(Locale.getDefault(), appStringFormat,
                     applicationInfo.packageName, applicationInfo.uid));
         }
-        if (allAppUidList.size() == 0 && allAppInfoStringList.size() == 0) {
+        if (allAppUidList.isEmpty() && allAppInfoStringList.isEmpty()) {
             if (!isShowSysApp) {
                 Toast.makeText(requireActivity(),
                         R.string.no_third_party_app, Toast.LENGTH_SHORT).show();
@@ -96,26 +108,23 @@ public class SettingsFragment extends Fragment {
                 throw new IllegalStateException("Cannot find any app including system app.");
             }
         }
+
         AlertDialog.Builder listDialog =
                 new AlertDialog.Builder(requireActivity());
         listDialog.setTitle(getString(R.string.app_select));
         listDialog.setItems(allAppInfoStringList.toArray(new String[0]), (dialog, which) -> {
-            setBinderWatchedUid(allAppUidList.get(which));
-            updateBinderWatchedUid();
+            PropertyManager.setWatchedUid(forWhat, allAppUidList.get(which));
+            updateWatchedUid();
         });
         listDialog.show();
-    }
-
-    private void setBinderWatchedUid(int uid) {
-        PropertyManager.setBinderWatchedUid(uid);
     }
 
     private void setShowSysAppChecked(boolean isChecked) {
         isShowSysApp = isChecked;
         SharedPreferences sharedPref = requireActivity().getSharedPreferences(
-                SHARED_PREF_MAIN, Context.MODE_PRIVATE);
+                Constant.SHARED_PREF_MAIN, Context.MODE_PRIVATE);
         SharedPreferences.Editor spEditor = sharedPref.edit();
-        spEditor.putBoolean(SP_KEY_SHOW_SYS_APP, isChecked);
+        spEditor.putBoolean(Constant.SP_KEY_SHOW_SYS_APP, isChecked);
         spEditor.apply();
     }
 

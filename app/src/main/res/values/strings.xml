@@ -1,21 +1,19 @@
 <resources>
     <string name="app_name">AppSandbox</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_log">Log</string>
     <string name="title_settings">Settings</string>
-    <string name="collected_binder_data">Collected binder data %1$d</string>
-    <string name="collected_http_data">Collected http data %1$d</string>
-    <string name="export_data">Export data</string>
+    <string name="collected_binder_data">Collected Binder data %1$d (Disabled)</string>
     <string name="clear_data">Clear data</string>
-    <string name="no_such_file">No such file or directory</string>
-    <string name="export_success">Export database to %1$s successfully</string>
     <string name="clear_success">Clear database successfully</string>
-    <string name="collected_dex_data">Collected dex data %1$d</string>
-    <string name="binder_watched_uid">Binder watched UID config</string>
-    <string name="binder_watched_uid_value" translatable="false">%1$s (%2$d)</string>
+    <string name="collected_dex_data">Collected DEX data %1$d</string>
+    <string name="watched_uid_binder">Binder watched UID config</string>
+    <string name="watched_uid_value" translatable="false">%1$s (%2$d)</string>
     <string name="modify_text">Modify</string>
     <string name="app_select">Select application</string>
-    <string name="collected_intent_data">Collected intent data %1$d</string>
+    <string name="collected_art_method_data">Collected ArtMethod data %1$d (Not Impl)</string>
     <string name="no_third_party_app">No third-party app installed.</string>
     <string name="show_sys_app_in_list">Show system app in app list</string>
+    <string name="watched_uid_dex">DEX watched UID config</string>
+    <string name="watch_uid_art_method">ArtMethod watched UID config</string>
 </resources>

@@ -6,24 +6,18 @@ import android.net.LocalServerSocket;
 import android.net.LocalSocket;
 import android.os.IBinder;
 
-import androidx.room.Room;
-
 import com.wrlus.app.sandbox.preference.Debug;
-import com.wrlus.app.sandbox.storage.db.MainDatabase;
+import com.wrlus.app.sandbox.utils.Constant;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class BaseHookService extends Service {
+public abstract class BaseHookService extends Service {
     private static final String TAG = "BaseHookService";
-    public static final String MAIN_DATA_DIR_NAME = "main_data";
-    public static final String MAIN_DB_NAME = "main_record.db";
-    public static final String BIN_DATA_FILE_SUFFIX = ".bin";
-    public static final String APK_FILE_SUFFIX = ".apk";
 
-    protected ListenThread listenThread;
+    ListenThread listenThread;
 
     @Override
     public void onCreate() {
@@ -44,12 +38,6 @@ public class BaseHookService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    public MainDatabase initDatabase() {
-        return Room.databaseBuilder(this, MainDatabase.class, MAIN_DB_NAME)
-                .enableMultiInstanceInvalidation()
-                .build();
     }
 
     abstract class ListenThread extends Thread {
@@ -83,7 +71,8 @@ public class BaseHookService extends Service {
         }
 
         public String createSubDataDir(String subDataDir) {
-            File dataDirFile = new File(getExternalFilesDir(null), MAIN_DATA_DIR_NAME);
+            File dataDirFile = new File(getExternalFilesDir(null),
+                    Constant.MAIN_DATA_DIR_NAME);
             if (!dataDirFile.exists()) {
                 if (!dataDirFile.mkdir()) {
                     Debug.e(TAG, "mkdir dataDir failed.");
@@ -102,7 +91,7 @@ public class BaseHookService extends Service {
 
         /**
          * Create an executor service for handler tasks.
-         * We use cached thread pool by default.
+         * We use cached thread pool by default, but subclass can override this method.
          * @return a cached thread pool executor service
          */
         public ThreadPoolExecutor createExecutorService() {
@@ -113,8 +102,8 @@ public class BaseHookService extends Service {
     }
 
     abstract static class HandlerTask implements Runnable {
-        protected LocalSocket socket;
-        protected String subDataDir;
+        LocalSocket socket;
+        String subDataDir;
 
         public void setSocket(LocalSocket socket) {
             this.socket = socket;

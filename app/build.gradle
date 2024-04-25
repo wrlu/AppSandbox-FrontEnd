@@ -3,14 +3,28 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('../signApk/keystore.jks')
+            storePassword '123456'
+            keyAlias 'platform'
+            keyPassword '123456'
+        }
+        release {
+            storeFile file('../signApk/keystore.jks')
+            storePassword '123456'
+            keyAlias 'platform'
+            keyPassword '123456'
+        }
+    }
     compileSdk 32
 
     defaultConfig {
         applicationId "com.wrlus.app.sandbox"
         minSdk 32
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        versionCode 210
+        versionName "2.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {

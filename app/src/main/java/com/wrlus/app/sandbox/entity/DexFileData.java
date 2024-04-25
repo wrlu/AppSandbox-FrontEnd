@@ -1,8 +1,8 @@
 package com.wrlus.app.sandbox.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.wrlus.app.sandbox.preference.Debug;
 import com.wrlus.app.sandbox.utils.StringUtils;
@@ -12,24 +12,15 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Entity(tableName = "dexfile_data")
-public class DexFileData {
+public class DexFileData extends BaseData {
     private static final String TAG = "DexFileData";
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private long id;
-    @ColumnInfo(name = "uid")
-    private int uid;
-    @ColumnInfo(name = "pid")
-    private int pid;
     @ColumnInfo(name = "package_name")
-    private String packageName;
-    @ColumnInfo(name = "timestamp")
-    private long timestamp;
+    String packageName;
     @ColumnInfo(name = "originDexPath")
-    private String originDexPath;
+    String originDexPath;
     @ColumnInfo(name = "dex")
-    private String dexSaveFile;
+    String dexSaveFile;
 
     public DexFileData() {}
 
@@ -47,8 +38,9 @@ public class DexFileData {
 
 //        Start reading dex file
         dexFileData.dexSaveFile = dexSaveFile;
+
         FileOutputStream fos = new FileOutputStream(dexSaveFile);
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[10240];
         int len;
         while ( (len = is.read(buffer)) != -1 ) {
             fos.write(buffer, 0, len);
@@ -59,44 +51,12 @@ public class DexFileData {
         return dexFileData;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public int getPid() {
-        return pid;
-    }
-
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
-
     public String getPackageName() {
         return packageName;
     }
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
     }
 
     public String getOriginDexPath() {
@@ -115,14 +75,12 @@ public class DexFileData {
         this.dexSaveFile = dexSaveFile;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return "DexFileData{" +
-                "id=" + id +
-                ", uid=" + uid +
-                ", pid=" + pid +
-                ", packageName='" + packageName + '\'' +
-                ", timestamp=" + timestamp +
+        return super.toString() +
+                ", DexFileData{" +
+                "packageName='" + packageName + '\'' +
                 ", originDexPath='" + originDexPath + '\'' +
                 ", dexSaveFile='" + dexSaveFile + '\'' +
                 '}';

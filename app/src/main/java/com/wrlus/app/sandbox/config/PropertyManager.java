@@ -1,46 +1,31 @@
 package com.wrlus.app.sandbox.config;
 
-import android.annotation.SuppressLint;
+import com.wrlus.app.sandbox.preference.Debug;
+import com.wrlus.app.sandbox.utils.Constant;
 
 public class PropertyManager {
-    public static final String PROPERTY_BINDER_WATCHED_UID = "sandbox.binder.watched.uid";
+    private static final String TAG = "PropertyManager";
 
-    public static int getBinderWatchedUid() {
-        String targetUidStr = get(PROPERTY_BINDER_WATCHED_UID);
-        if (targetUidStr != null) {
+    static {
+        System.loadLibrary("sandbox");
+    }
+
+    public static int getWatchedUid(String what) {
+        String targetUidStr = get(String.format(Constant.FMT_PROPERTY_WATCHED_UID, what));
+        if (targetUidStr != null && !targetUidStr.isEmpty()) {
             try {
                 return Integer.parseInt(targetUidStr);
             } catch (NumberFormatException e) {
-                e.printStackTrace();
+                Debug.e(TAG, e);
             }
         }
         return -1;
     }
 
-    public static void setBinderWatchedUid(int val) {
-        set(PROPERTY_BINDER_WATCHED_UID, String.valueOf(val));
+    public static void setWatchedUid(String what, int val) {
+        set(String.format(Constant.FMT_PROPERTY_WATCHED_UID, what), String.valueOf(val));
     }
 
-    @SuppressLint("PrivateApi")
-    public static String get(String key) {
-        try {
-            return (String) Class.forName("android.os.SystemProperties")
-                    .getDeclaredMethod("get", String.class)
-                    .invoke(null, key);
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @SuppressLint({"PrivateApi", "DiscouragedPrivateApi"})
-    public static void set(String key, String val) {
-        try {
-            Class.forName("android.os.SystemProperties")
-                    .getDeclaredMethod("set", String.class, String.class)
-                    .invoke(null, key, val);
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
-        }
-    }
+    public static native String get(String key);
+    public static native void set(String key, String value);
 }

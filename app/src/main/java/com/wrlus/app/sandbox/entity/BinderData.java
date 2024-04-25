@@ -3,37 +3,26 @@ package com.wrlus.app.sandbox.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.wrlus.app.sandbox.preference.Debug;
+import com.wrlus.app.sandbox.utils.Constant;
 import com.wrlus.app.sandbox.utils.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 @Entity(tableName = "binder_data")
-public class BinderData {
+public class BinderData extends BaseData {
     private static final String TAG = "BinderData";
-//    Max binder buffer size is 1MB per process.
-    private static final int BINDER_DATA_RECV_BUF_LEN = 1024 * 1024;
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private int id;
-    @ColumnInfo(name = "uid")
-    private int uid;
-    @ColumnInfo(name = "pid")
-    private int pid;
     @ColumnInfo(name = "interface_token")
-    private String interfaceToken;
+    String interfaceToken;
     @ColumnInfo(name = "operation")
-    private int operation;
+    int operation;
     @ColumnInfo(name = "code")
-    private int code;
-    @ColumnInfo(name = "timestamp")
-    private long timestamp;
+    int code;
     @ColumnInfo(name = "data")
-    private byte[] data;
+    byte[] data;
 
     public static BinderData openStream(InputStream is) throws IOException {
         if (is == null) {
@@ -47,7 +36,7 @@ public class BinderData {
         binderData.timestamp = Long.parseLong(StringUtils.readLine(is));
 
         int dataLen = Integer.parseInt(StringUtils.readLine(is));
-        if (dataLen > BINDER_DATA_RECV_BUF_LEN) {
+        if (dataLen > Constant.BINDER_DATA_RECEIVE_BUF_LEN) {
             Debug.e(TAG, "dataLen > BINDER_DATA_RECV_BUF_LEN, excepted " + dataLen +
                     ", uid " + binderData.uid + ", pid " + binderData.pid);
             return binderData;
@@ -60,30 +49,6 @@ public class BinderData {
         }
         Debug.d(TAG, "Received " + binderData);
         return binderData;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public int getPid() {
-        return pid;
-    }
-
-    public void setPid(int pid) {
-        this.pid = pid;
     }
 
     public String getInterfaceToken() {
@@ -110,14 +75,6 @@ public class BinderData {
         this.code = code;
     }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public byte[] getData() {
         return data;
     }
@@ -129,15 +86,11 @@ public class BinderData {
     @NonNull
     @Override
     public String toString() {
-        int dataLen = data != null ? data.length : 0;
-        return "BinderData{" +
-                "id=" + id +
-                ", uid=" + uid +
-                ", pid=" + pid +
-                ", interfaceToken='" + interfaceToken + '\'' +
+        return super.toString() +
+                ", BinderData{" +
+                "interfaceToken='" + interfaceToken + '\'' +
                 ", operation=" + operation +
                 ", code=" + code +
-                ", dataLen=" + dataLen +
                 '}';
     }
 }

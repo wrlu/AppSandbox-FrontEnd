@@ -1,8 +1,11 @@
 package com.wrlus.app.sandbox.service;
 
+import com.wrlus.app.sandbox.MainApplication;
 import com.wrlus.app.sandbox.entity.BinderData;
 import com.wrlus.app.sandbox.preference.Debug;
 import com.wrlus.app.sandbox.storage.dao.BinderDao;
+import com.wrlus.app.sandbox.storage.db.MainDatabase;
+import com.wrlus.app.sandbox.utils.Constant;
 
 import java.io.IOException;
 
@@ -12,14 +15,19 @@ public class BinderHookService extends BaseHookService {
 
     @Override
     public void onCreate() {
-        binderDao = initDatabase().binderDao();
-        listenThread = new BinderDataListenThread();
+        MainDatabase mainDb = MainApplication.getMainDatabase();
+        if (mainDb != null) {
+            binderDao = mainDb.binderDao();
+            listenThread = new BinderDataListenThread();
+        } else {
+            Debug.e(TAG, "MainDatabase is null, cannot start service.");
+        }
         super.onCreate();
     }
 
     class BinderDataListenThread extends ListenThread {
         public BinderDataListenThread() {
-            super("AppSandbox_Binder", "binder");
+            super(Constant.UDS_NAME_BINDER, Constant.FEATURE_BINDER);
         }
 
         @Override
