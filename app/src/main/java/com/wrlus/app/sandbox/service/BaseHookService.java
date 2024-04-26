@@ -11,6 +11,7 @@ import com.wrlus.app.sandbox.utils.Constant;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -18,6 +19,10 @@ public abstract class BaseHookService extends Service {
     private static final String TAG = "BaseHookService";
 
     ListenThread listenThread;
+
+    static {
+        System.loadLibrary("sandbox");
+    }
 
     @Override
     public void onCreate() {
@@ -43,34 +48,79 @@ public abstract class BaseHookService extends Service {
     abstract class ListenThread extends Thread {
         private final String localSocketName;
         private final String subDataDir;
+        private final boolean isUseNative;
         private final ThreadPoolExecutor executor;
 
-        public ListenThread(String localSocketName, String subDataDirChild) {
+        public ListenThread(String localSocketName, String subDataDirChild, boolean isUseNative) {
             this.localSocketName = localSocketName;
             this.subDataDir = createSubDataDir(subDataDirChild);
+            this.isUseNative = isUseNative;
             this.executor = createExecutorService();
         }
 
         @Override
         public void run() {
-            try {
-                LocalServerSocket serverSocket = new LocalServerSocket(localSocketName);
-                Debug.d(TAG, "Start listen LocalSocket: "+localSocketName);
-                while (!currentThread().isInterrupted()) {
-                    LocalSocket socket = serverSocket.accept();
-                    HandlerTask handler = createHandlerTask();
-                    handler.setSocket(socket);
-                    handler.setSubDataDir(subDataDir);
-                    executor.execute(handler);
-                }
-                serverSocket.close();
-                executor.shutdown();
-            } catch (IOException e) {
-                Debug.e(TAG, e);
+            if (isUseNative) {
+                doNativeListenTask();
+            } else {
+                doListenTask();
             }
         }
 
-        public String createSubDataDir(String subDataDir) {
+        private void doListenTask() {
+            LocalServerSocket serverSocket;
+            try {
+                serverSocket = new LocalServerSocket(localSocketName);
+            } catch (IOException e) {
+                Debug.e(TAG, e);
+                return;
+            }
+            Debug.d(TAG, "Start listen LocalSocket: " + localSocketName);
+            while (!currentThread().isInterrupted()) {
+                LocalSocket socket;
+                try {
+                    socket = serverSocket.accept();
+                } catch (IOException e) {
+                    Debug.e(TAG, e);
+                    continue;
+                }
+                HandlerTask handler = createHandlerTask();
+                handler.socket = socket;
+                handler.subDataDir = subDataDir;
+                handler.isUseNative = isUseNative;
+                executor.execute(handler);
+            }
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                Debug.e(TAG, e);
+            }
+            executor.shutdown();
+        }
+
+        private void doNativeListenTask() {
+            int serverFd = BaseHookService.listenNative(localSocketName);
+            if (serverFd < 0) {
+                return;
+            }
+            Debug.d(TAG, "Start listen LocalSocket: " + localSocketName);
+            while (!currentThread().isInterrupted()) {
+                int clientFd = BaseHookService.acceptNative(serverFd);
+                if (clientFd < 0) {
+                    Debug.d(TAG, "clientFd = " + clientFd);
+                    continue;
+                }
+                HandlerTask handler = createHandlerTask();
+                handler.clientFd = clientFd;
+                handler.subDataDir = subDataDir;
+                handler.isUseNative = isUseNative;
+                executor.execute(handler);
+            }
+            BaseHookService.closeFdNative(serverFd);
+            executor.shutdown();
+        }
+
+        private String createSubDataDir(String subDataDir) {
             File dataDirFile = new File(getExternalFilesDir(null),
                     Constant.MAIN_DATA_DIR_NAME);
             if (!dataDirFile.exists()) {
@@ -101,16 +151,16 @@ public abstract class BaseHookService extends Service {
         public abstract HandlerTask createHandlerTask();
     }
 
+    public static native int listenNative(String localSocketName);
+
+    public static native int acceptNative(int server_fd);
+
+    public static native void closeFdNative(int fd);
+
     abstract static class HandlerTask implements Runnable {
         LocalSocket socket;
+        int clientFd;
         String subDataDir;
-
-        public void setSocket(LocalSocket socket) {
-            this.socket = socket;
-        }
-
-        public void setSubDataDir(String subDataDir) {
-            this.subDataDir = subDataDir;
-        }
+        boolean isUseNative;
     }
 }

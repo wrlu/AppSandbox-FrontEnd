@@ -12,6 +12,7 @@ import com.wrlus.app.sandbox.utils.Constant;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 public class DexHookService extends BaseHookService {
@@ -32,7 +33,7 @@ public class DexHookService extends BaseHookService {
 
     class DexFileDataListenThread extends ListenThread {
         public DexFileDataListenThread() {
-            super(Constant.UDS_NAME_DEX, Constant.FEATURE_DEX);
+            super(Constant.UDS_NAME_DEX, Constant.FEATURE_DEX, true);
         }
 
         @Override
@@ -45,18 +46,31 @@ public class DexHookService extends BaseHookService {
 
         @Override
         public void run() {
-            try {
-                File dexSaveFile = new File(subDataDir, UUID.randomUUID().toString() +
-                        Constant.APK_FILE_SUFFIX);
-                DexFileData dexFileData = DexFileData.openStream(socket.getInputStream(),
+            File dexSaveFile = new File(subDataDir, UUID.randomUUID().toString() +
+                    Constant.APK_FILE_SUFFIX);
+            DexFileData dexFileData;
+            if (isUseNative) {
+                dexFileData = DexFileData.openStreamNative(clientFd,
                         dexSaveFile.getAbsolutePath());
-                socket.close();
-                if (dexFileData != null) {
-                    fixDexFileData(dexFileData);
-                    dexFileDao.insertDexFile(dexFileData);
+                BaseHookService.closeFdNative(clientFd);
+            } else {
+                InputStream is;
+                try {
+                    is = socket.getInputStream();
+                } catch (IOException e) {
+                    Debug.e(TAG, e);
+                    return;
                 }
-            } catch (IOException e) {
-                Debug.e(TAG, e);
+                dexFileData = DexFileData.openStream(is, dexSaveFile.getAbsolutePath());
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    Debug.e(TAG, e);
+                }
+            }
+            if (dexFileData != null) {
+                fixDexFileData(dexFileData);
+                dexFileDao.insertDexFile(dexFileData);
             }
         }
 

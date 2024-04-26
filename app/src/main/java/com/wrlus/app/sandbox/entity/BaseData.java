@@ -4,6 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
+import com.wrlus.app.sandbox.utils.StringUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 public abstract class BaseData {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -14,6 +19,16 @@ public abstract class BaseData {
     int pid;
     @ColumnInfo(name = "timestamp")
     long timestamp;
+
+    static void openStream(InputStream is, BaseData baseData) throws IOException {
+        if (is == null) return;
+
+        baseData.uid = Integer.parseInt(StringUtils.readLine(is));
+        baseData.pid = Integer.parseInt(StringUtils.readLine(is));
+        baseData.timestamp = Long.parseLong(StringUtils.readLine(is));
+    }
+
+    public static native void openStreamNative(int client_fd, BaseData baseData);
 
     public long getId() {
         return id;

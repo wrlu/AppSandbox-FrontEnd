@@ -24,19 +24,20 @@ public class DexFileData extends BaseData {
     @ColumnInfo(name = "dex")
     String dexSaveFile;
 
-    public DexFileData() {}
+    static {
+        System.loadLibrary("sandbox");
+    }
 
-    public static DexFileData openStream(InputStream is, String dexSaveFile) throws IOException {
-        if (is == null){
+    public static DexFileData openStream(InputStream is, String dexSaveFile) {
+        if (is == null) return null;
+
+        DexFileData dexFileData = new DexFileData();
+        try {
+            BaseData.openStream(is, dexFileData);
+        } catch (IOException e) {
+            Debug.e(TAG, e);
             return null;
         }
-        DexFileData dexFileData = new DexFileData();
-
-        dexFileData.uid = Integer.parseInt(StringUtils.readLine(is));
-        dexFileData.pid = Integer.parseInt(StringUtils.readLine(is));
-        dexFileData.packageName = StringUtils.readLine(is);
-        dexFileData.timestamp = Long.parseLong(StringUtils.readLine(is));
-        dexFileData.originDexPath = StringUtils.readLine(is);
 
         int watchedUid = PropertyManager.getWatchedUid(Constant.FEATURE_DEX);
         if (watchedUid != dexFileData.uid) {
@@ -47,17 +48,25 @@ public class DexFileData extends BaseData {
         // Start reading dex file
         dexFileData.dexSaveFile = dexSaveFile;
 
-        FileOutputStream fos = new FileOutputStream(dexSaveFile);
-        byte[] buffer = new byte[10240];
-        int len;
-        while ( (len = is.read(buffer)) != -1 ) {
-            fos.write(buffer, 0, len);
-            fos.flush();
+        try {
+            dexFileData.originDexPath = StringUtils.readLine(is);
+            FileOutputStream fos = new FileOutputStream(dexSaveFile);
+            byte[] buffer = new byte[10240];
+            int len;
+            while ( (len = is.read(buffer)) != -1 ) {
+                fos.write(buffer, 0, len);
+                fos.flush();
+            }
+            fos.close();
+            Debug.d(TAG, "Received " + dexFileData);
+            return dexFileData;
+        } catch (IOException e) {
+            Debug.e(TAG, e);
+            return null;
         }
-        fos.close();
-        Debug.d(TAG, "Received " + dexFileData);
-        return dexFileData;
     }
+
+    public static native DexFileData openStreamNative(int clientFd, String dexSaveFile);
 
     public String getPackageName() {
         return packageName;
