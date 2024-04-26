@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
+import com.wrlus.app.sandbox.config.PropertyManager;
 import com.wrlus.app.sandbox.preference.Debug;
+import com.wrlus.app.sandbox.utils.Constant;
 import com.wrlus.app.sandbox.utils.StringUtils;
 
 import java.io.FileOutputStream;
@@ -36,7 +38,13 @@ public class DexFileData extends BaseData {
         dexFileData.timestamp = Long.parseLong(StringUtils.readLine(is));
         dexFileData.originDexPath = StringUtils.readLine(is);
 
-//        Start reading dex file
+        int watchedUid = PropertyManager.getWatchedUid(Constant.FEATURE_DEX);
+        if (watchedUid != dexFileData.uid) {
+            Debug.w(TAG, "Skip not watched uid = " + dexFileData.uid);
+            return null;
+        }
+
+        // Start reading dex file
         dexFileData.dexSaveFile = dexSaveFile;
 
         FileOutputStream fos = new FileOutputStream(dexSaveFile);

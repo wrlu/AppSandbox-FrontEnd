@@ -51,8 +51,10 @@ public class DexHookService extends BaseHookService {
                 DexFileData dexFileData = DexFileData.openStream(socket.getInputStream(),
                         dexSaveFile.getAbsolutePath());
                 socket.close();
-                fixDexFileData(dexFileData);
-                dexFileDao.insertDexFile(dexFileData);
+                if (dexFileData != null) {
+                    fixDexFileData(dexFileData);
+                    dexFileDao.insertDexFile(dexFileData);
+                }
             } catch (IOException e) {
                 Debug.e(TAG, e);
             }

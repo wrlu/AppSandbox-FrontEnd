@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_log"
-        android:name="com.wrlus.app.sandbox.ui.DashboardFragment"
+        android:name="com.wrlus.app.sandbox.ui.LogFragment"
         android:label="@string/title_log"
         tools:layout="@layout/fragment_log" />
 

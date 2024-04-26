@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.wrlus.app.sandbox.databinding.FragmentLogBinding;
 
-public class DashboardFragment extends Fragment {
+public class LogFragment extends Fragment {
 
     private FragmentLogBinding binding;
 
