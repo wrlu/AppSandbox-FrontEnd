@@ -29,46 +29,6 @@ public class BinderData extends BaseData {
         System.loadLibrary("sandbox");
     }
 
-    public static BinderData openStream(InputStream is) {
-        if (is == null) return null;
-
-        BinderData binderData = new BinderData();
-        try {
-            BaseData.openStream(is, binderData);
-        } catch (IOException e) {
-            Debug.e(TAG, e);
-            return null;
-        }
-
-        int watchedUid = PropertyManager.getWatchedUid(Constant.FEATURE_BINDER);
-        if (watchedUid != binderData.uid) {
-            Debug.w(TAG, "Skip not watched uid = " + binderData.uid);
-            return null;
-        }
-
-        try {
-            binderData.code = Integer.parseInt(StringUtils.readLine(is));
-
-            int dataLen = Integer.parseInt(StringUtils.readLine(is));
-            if (dataLen > Constant.BINDER_DATA_RECEIVE_BUF_LEN) {
-                Debug.e(TAG, "dataLen > BINDER_DATA_RECV_BUF_LEN, excepted " + dataLen +
-                        ", uid " + binderData.uid + ", pid " + binderData.pid);
-                return null;
-            }
-            binderData.data = new byte[dataLen];
-            int readSize = is.read(binderData.data);
-            if (readSize != dataLen) {
-                Debug.w(TAG, "readSize != dataLen, excepted "+ dataLen +
-                        ", found " + readSize + ", uid " + binderData.uid + ", pid " + binderData.pid);
-            }
-            Debug.d(TAG, "Received " + binderData);
-            return binderData;
-        } catch (IOException e) {
-            Debug.e(TAG, e);
-            return null;
-        }
-    }
-
     public static native BinderData openStreamNative(int clientFd);
 
     public String getInterfaceToken() {

@@ -20,12 +20,8 @@ public abstract class BaseData {
     @ColumnInfo(name = "timestamp")
     long timestamp;
 
-    static void openStream(InputStream is, BaseData baseData) throws IOException {
-        if (is == null) return;
-
-        baseData.uid = Integer.parseInt(StringUtils.readLine(is));
-        baseData.pid = Integer.parseInt(StringUtils.readLine(is));
-        baseData.timestamp = Long.parseLong(StringUtils.readLine(is));
+    static {
+        System.loadLibrary("sandbox");
     }
 
     public static native void openStreamNative(int client_fd, BaseData baseData);

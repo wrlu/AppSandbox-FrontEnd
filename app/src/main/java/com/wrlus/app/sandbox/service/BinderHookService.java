@@ -7,9 +7,6 @@ import com.wrlus.app.sandbox.storage.dao.BinderDao;
 import com.wrlus.app.sandbox.storage.db.MainDatabase;
 import com.wrlus.app.sandbox.utils.Constant;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 public class BinderHookService extends BaseHookService {
     private static final String TAG = "BinderHookService";
     private BinderDao binderDao;
@@ -28,7 +25,7 @@ public class BinderHookService extends BaseHookService {
 
     class BinderDataListenThread extends ListenThread {
         public BinderDataListenThread() {
-            super(Constant.UDS_NAME_BINDER, Constant.FEATURE_BINDER, true);
+            super(Constant.UDS_NAME_BINDER, Constant.FEATURE_BINDER);
         }
 
         @Override
@@ -41,25 +38,8 @@ public class BinderHookService extends BaseHookService {
 
         @Override
         public void run() {
-            BinderData binderData;
-            if (isUseNative) {
-                binderData = BinderData.openStreamNative(clientFd);
-                BaseHookService.closeFdNative(clientFd);
-            } else {
-                InputStream is;
-                try {
-                    is = socket.getInputStream();
-                } catch (IOException e) {
-                    Debug.e(TAG, e);
-                    return;
-                }
-                binderData = BinderData.openStream(is);
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    Debug.e(TAG, e);
-                }
-            }
+            BinderData binderData = BinderData.openStreamNative(clientFd);
+            BaseHookService.closeFdNative(clientFd);
             if (binderData != null) {
                 binderDao.insertBinderData(binderData);
             }
