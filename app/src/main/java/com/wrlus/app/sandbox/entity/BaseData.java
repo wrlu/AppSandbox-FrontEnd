@@ -4,11 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
-import com.wrlus.app.sandbox.utils.StringUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-
 public abstract class BaseData {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

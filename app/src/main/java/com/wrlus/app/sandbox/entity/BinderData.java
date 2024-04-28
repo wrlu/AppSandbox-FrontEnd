@@ -4,18 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
-import com.wrlus.app.sandbox.config.PropertyManager;
-import com.wrlus.app.sandbox.preference.Debug;
-import com.wrlus.app.sandbox.utils.Constant;
-import com.wrlus.app.sandbox.utils.StringUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-
 @Entity(tableName = "binder_data")
 public class BinderData extends BaseData {
-    private static final String TAG = "BinderData";
-
     @ColumnInfo(name = "interface_token")
     String interfaceToken;
     @ColumnInfo(name = "operation")

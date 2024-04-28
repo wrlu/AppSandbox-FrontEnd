@@ -4,19 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
-import com.wrlus.app.sandbox.config.PropertyManager;
-import com.wrlus.app.sandbox.preference.Debug;
-import com.wrlus.app.sandbox.utils.Constant;
-import com.wrlus.app.sandbox.utils.StringUtils;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 @Entity(tableName = "dexfile_data")
 public class DexFileData extends BaseData {
-    private static final String TAG = "DexFileData";
-
     @ColumnInfo(name = "package_name")
     String packageName;
     @ColumnInfo(name = "originDexPath")

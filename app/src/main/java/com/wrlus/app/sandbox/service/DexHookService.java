@@ -9,6 +9,7 @@ import com.wrlus.app.sandbox.preference.Debug;
 import com.wrlus.app.sandbox.storage.dao.DexFileDao;
 import com.wrlus.app.sandbox.storage.db.MainDatabase;
 import com.wrlus.app.sandbox.utils.Constant;
+import com.wrlus.app.sandbox.utils.Hash;
 
 import java.io.File;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class DexHookService extends BaseHookService {
     private static final String TAG = "DexHookService";
     private DexFileDao dexFileDao;
+    private static final Object FILE_LOCK = new Object();
 
     @Override
     public void onCreate() {
@@ -44,18 +46,22 @@ public class DexHookService extends BaseHookService {
 
         @Override
         public void run() {
+            // This is only temp file dest, must call `renameDexFile` to fix it.
             File dexSaveFile = new File(subDataDir, UUID.randomUUID().toString() +
                     Constant.APK_FILE_SUFFIX);
             DexFileData dexFileData = DexFileData.openStreamNative(clientFd,
                     dexSaveFile.getAbsolutePath());
             BaseHookService.closeFdNative(clientFd);
             if (dexFileData != null) {
-                fixDexFileData(dexFileData);
+                fixPackageName(dexFileData);
+                if (renameDexFile(dexFileData)) {
+                    Debug.w(TAG, "Same hash dex file exists.");
+                }
                 dexFileDao.insertDexFile(dexFileData);
             }
         }
 
-        private void fixDexFileData(DexFileData dexFileData) {
+        private void fixPackageName(DexFileData dexFileData) {
             PackageManager pm = getPackageManager();
             int uid = dexFileData.getUid();
             if (Process.isApplicationUid(uid)) {
@@ -66,5 +72,29 @@ public class DexHookService extends BaseHookService {
                 }
             }
         }
+
+        private boolean renameDexFile(DexFileData dexFileData) {
+            File dexSaveFile = new File(dexFileData.getDexSaveFile());
+            String hash = Hash.getFileHash(dexSaveFile.getAbsolutePath(), "SHA-256");
+
+            File dexSaveFileUseHash = new File(subDataDir, hash + Constant.APK_FILE_SUFFIX);
+            dexFileData.setDexSaveFile(dexSaveFileUseHash.getAbsolutePath());
+
+            // Lock here for multi-thread handler may receive same hash files.
+            synchronized (FILE_LOCK) {
+                boolean isFileExists = dexSaveFileUseHash.exists();
+                if (isFileExists) {
+                    if (!dexSaveFile.delete()) {
+                        Debug.e(TAG, "Delete file " + dexSaveFile.getAbsolutePath() + " failed.");
+                    }
+                } else {
+                    if (!dexSaveFile.renameTo(dexSaveFileUseHash)) {
+                        Debug.e(TAG, "Rename file " + dexSaveFile.getAbsolutePath() + " failed.");
+                    }
+                }
+                return isFileExists;
+            }
+        }
+
     }
 }
