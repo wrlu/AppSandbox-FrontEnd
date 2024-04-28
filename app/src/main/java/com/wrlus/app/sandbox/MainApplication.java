@@ -1,7 +1,11 @@
 package com.wrlus.app.sandbox;
 
+import android.app.ActivityManager;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.widget.Toast;
 
 import androidx.room.Room;
@@ -13,6 +17,7 @@ import com.wrlus.app.sandbox.storage.db.MainDatabase;
 import com.wrlus.app.sandbox.utils.Constant;
 
 import java.io.File;
+import java.lang.reflect.Method;
 
 public class MainApplication extends Application {
     private static final String TAG = "MainApplication";
@@ -72,11 +77,22 @@ public class MainApplication extends Application {
         if (!dbFile.exists()) {
             return;
         }
+        File dbShmFile = new File(databaseFile + "-shm");
+        File dbWalFile = new File(databaseFile + "-wal");
+
+        boolean isDeletedDb = dbFile.delete() && dbShmFile.delete() && dbWalFile.delete();
         boolean isDeletedDir = new File(getExternalFilesDir(null),
                 Constant.MAIN_DATA_DIR_NAME).delete();
-        boolean isDeletedDb = dbFile.delete();
         Debug.d(TAG, "clearData() result: isDeletedDir = "+isDeletedDir+
-                ", isDeletedDb="+isDeletedDb);
+                ", isDeletedDb = " + isDeletedDb);
         Toast.makeText(this, R.string.clear_success, Toast.LENGTH_SHORT).show();
+        Handler handler = new Handler();
+        handler.postDelayed(this::exitApp, 1000);
+    }
+
+    public void exitApp() {
+        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        am.killBackgroundProcesses(getOpPackageName());
+        System.exit(0);
     }
 }

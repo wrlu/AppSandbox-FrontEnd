@@ -6,7 +6,7 @@
     <string name="title_log">日志</string>
     <string name="collected_binder_data">已收集的 Binder 数据 %1$d (禁用)</string>
     <string name="clear_data">清空数据</string>
-    <string name="clear_success">清除数据库成功</string>
+    <string name="clear_success">清除数据库成功，将重启应用。</string>
     <string name="collected_dex_data">已收集的 DEX 数据 %1$d</string>
     <string name="watched_uid_binder">Binder 监视 UID 配置</string>
     <string name="modify_text">修改</string>

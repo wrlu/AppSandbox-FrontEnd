@@ -56,7 +56,6 @@ public class HomeFragment extends Fragment {
     private void onClearData() {
         MainApplication mainApp = (MainApplication) requireActivity().getApplication();
         mainApp.clearData();
-        new Thread(this::updateDataCount).start();
     }
 
     @Override
