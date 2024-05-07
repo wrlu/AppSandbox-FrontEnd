@@ -16,4 +16,5 @@
     <string name="show_sys_app_in_list">Show system app in app list</string>
     <string name="watched_uid_dex">DEX watched UID config</string>
     <string name="watch_uid_art_method">ArtMethod watched UID config</string>
+    <string name="clear_all_watched_uid">Clear all watched UID config</string>
 </resources>

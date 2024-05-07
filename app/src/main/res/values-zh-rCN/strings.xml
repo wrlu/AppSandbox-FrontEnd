@@ -16,4 +16,5 @@
     <string name="show_sys_app_in_list">在应用列表中显示系统应用</string>
     <string name="watched_uid_dex">DEX 监视 UID 配置</string>
     <string name="watch_uid_art_method">ArtMethod 监视 UID 配置</string>
+    <string name="clear_all_watched_uid">清除所有监视 UID 配置</string>
 </resources>

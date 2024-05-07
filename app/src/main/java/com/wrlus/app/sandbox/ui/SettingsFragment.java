@@ -35,6 +35,8 @@ public class SettingsFragment extends Fragment {
                 Constant.SHARED_PREF_MAIN, Context.MODE_PRIVATE);
         isShowSysApp = sharedPref.getBoolean(Constant.SP_KEY_SHOW_SYS_APP, false);
 
+        binding.buttonClearAll.setOnClickListener(v ->
+                clearAllWatchedUid());
         binding.buttonModifyDex.setOnClickListener(v ->
                 showSelectPackageDialog(Constant.FEATURE_DEX));
         binding.buttonModifyArtMethod.setOnClickListener(v ->
@@ -126,6 +128,13 @@ public class SettingsFragment extends Fragment {
         SharedPreferences.Editor spEditor = sharedPref.edit();
         spEditor.putBoolean(Constant.SP_KEY_SHOW_SYS_APP, isChecked);
         spEditor.apply();
+    }
+
+    private void clearAllWatchedUid() {
+        PropertyManager.setWatchedUid(Constant.FEATURE_DEX, -1);
+        PropertyManager.setWatchedUid(Constant.FEATURE_ART_METHOD, -1);
+        PropertyManager.setWatchedUid(Constant.FEATURE_BINDER, -1);
+        updateWatchedUid();
     }
 
     @Override

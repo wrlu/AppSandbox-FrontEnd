@@ -16,7 +16,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch_show_sys_app" />
+        app:layout_constraintTop_toBottomOf="@+id/button_clear_all" />
 
     <Button
         android:id="@+id/button_modify_dex"
@@ -26,7 +26,7 @@
         android:layout_marginEnd="8dp"
         android:text="@string/modify_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch_show_sys_app" />
+        app:layout_constraintTop_toBottomOf="@+id/button_clear_all" />
 
     <TextView
         android:id="@+id/text_art_method_watched_uid_config"
@@ -117,5 +117,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <Button
+        android:id="@+id/button_clear_all"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/clear_all_watched_uid"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch_show_sys_app" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
